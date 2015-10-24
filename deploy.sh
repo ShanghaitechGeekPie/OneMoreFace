@@ -13,5 +13,5 @@ git pull origin master
 git checkout master
 echo "changing permissions..."
 chown -R $WEB_USER:$WEB_USERGROUP $WEB_PATH
-service apache2 restart
+apache2ctl restart
 echo "Finished."
