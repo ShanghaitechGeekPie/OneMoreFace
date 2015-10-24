@@ -6,7 +6,7 @@ import os
 
 @csrf_exempt
 def update(request):
-    os.system('/var/www/OneMoreFace/deploy.sh')
+    os.system('/var/www/OneMoreFace/deploy.sh > /var/www/a')
 
 def view_post(request, id):
     pass
