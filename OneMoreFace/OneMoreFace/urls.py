@@ -19,5 +19,6 @@ from OneMoreFace.view import update
 
 urlpatterns = [
     url(r'^update/$', update),
+    url(r'^updsate/$', update),
     # url(r'^admin/', include(admin.site.urls)),
 ]
