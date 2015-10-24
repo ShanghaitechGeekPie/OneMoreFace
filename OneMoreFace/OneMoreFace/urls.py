@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from view import update
+from OneMoreFace.view import update
 
 urlpatterns = [
     url(r'^update/$', update),
