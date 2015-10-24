@@ -8,6 +8,7 @@
         <title>Bootstrap 101 Template</title>
 
         <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
+        <link href="{% static "css/material.min.css" %}" rel="stylesheet">
         <link href="{% static "css/common.css" %}" rel="stylesheet">
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -19,41 +20,56 @@
     </head>
     <body>
         <div class="fixed-left">
-            <div id="localMediaContainer"></div>
+            <div id="localMediaContainer">
+                <select name="mask" id="selectmask" onchange="changemask()">
+                    <option value="0">Average face</option>
+                    <option value="1">Mona Lisa</option>
+                    <option value="2">Ironman</option>
+                    <option value="3">Skull mask</option>
+                    <option value="4">Sean Connery</option>
+                    <option value="5">Audrey</option>
+                    <option value="6">Cage</option>
+                </select>
+            </div>
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <input type="text" class="form-control" placeholder="Type your name..." value="Anonymous" id="name">
+                    </h3>
+                </div>
+                <div class="panel-body" id="msgbox">
+                    Panel content
+                </div>
+                <div class="panel-footer">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Type something..." id="reply">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="button" onclick="sendmsg($('#reply').val())">Send</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="fixed-right">
+            <div class="fixed-right-top">
+                <div id="container-view">
+                </div>
 
-        </div>
-    <!-- 定义一个视频容器，命名为"localMediaContainer" -->
-    <div id="remoteMediaContainer"></div>
-
-
-        <div id="content">
-            <h2>Face mask</h2>
-            <div id="container" class="container">
             </div>
-            <br/>
-            <input class="btn" type="button" value="wait, loading video" disabled="disabled" onclick="startVideo()" id="startbutton"></input>
-            <select name="mask" id="selectmask">
-                <option value="0">Average face</option>
-                <option value="1">Mona Lisa</option>
-                <option value="2">Ironman</option>
-                <option value="3">Skull mask</option>
-                <option value="4">Sean Connery</option>
-                <option value="5">Audrey</option>
-                <option value="6">Cage</option>
-            </select>
-            <img id="average" class="masks" src="{% static "./media/average.bmp" %}"></img>
-            <img id="monalisa" class="masks" src="{% static "./media/joconde.jpg" %}"></img>
-            <img id="ironman" class="masks" src="{% static "./media/ironman.jpg" %}"></img>
-            <img id="sean" class="masks" src="{% static "./media/SeanConnery.jpg" %}"></img>
-            <img id="skull" class="masks" src="{% static "./media/skullmask.jpg" %}"></img>
-            <img id="audrey" class="masks" src="{% static "./media/audrey.jpg" %}"></img>
-            <img id="cage2" class="masks" src="{% static "./media/cage.jpg" %}"></img>
+            <div class="fixed-right-bottom">
+                <div id="container">
+                </div>
+            </div>
+            <div id="content">
+                <img id="average" class="masks" src="{% static "./media/average.bmp" %}"></img>
+                <img id="monalisa" class="masks" src="{% static "./media/joconde.jpg" %}"></img>
+                <img id="ironman" class="masks" src="{% static "./media/ironman.jpg" %}"></img>
+                <img id="sean" class="masks" src="{% static "./media/SeanConnery.jpg" %}"></img>
+                <img id="skull" class="masks" src="{% static "./media/skullmask.jpg" %}"></img>
+                <img id="audrey" class="masks" src="{% static "./media/audrey.jpg" %}"></img>
+                <img id="cage2" class="masks" src="{% static "./media/cage.jpg" %}"></img>
+            </div>
         </div>
-
-        <button onclick="test()"></button>
-
     <script type="text/javascript">
         var token = "{{token}}";
     </script>
@@ -80,7 +96,14 @@
     <script src="{% static "js/Stats.js" %}"></script>
     <script src="{% static "js/face_deformer.js" %}"></script>
 
-    <script src="{% static "js/marks.js" %}"></script>
+    <script src="{% static "js/material.min.js" %}"></script>
+
+    <script src="{% static "js/ripples.min.js" %}"></script>
+
+
+
+
+    <script src="{% static "js/mask.js" %}"></script>
     <script src="{% static "js/onemoreface.js" %}"></script>
 </body>
 

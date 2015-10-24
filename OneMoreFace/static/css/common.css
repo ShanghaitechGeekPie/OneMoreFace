@@ -28,12 +28,60 @@ video {
     filter : fliph; /*IE*/
 }
 
-.container {
+.container{
+    display: inline-block;
+    margin-right: 20px;
     position : relative;
     width : 370px;
-    /*margin : 0px auto;*/
+    padding: 0px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+    width: 120px;
+    height: 90px;
+    background-color: black;
+    transition: all 0.2s linear;
 }
 
+.mask-question{
+    position: absolute;
+    font-size: 40px;
+    height: 50px;
+    width: 20px;
+    margin: -25px -10px;
+    top: 50%;
+    left: 50%;
+    color: white;
+    text-shadow: 0px 0px 5px rgba(0, 0, 0, 1);
+}
+
+.container video{
+    -webkit-filter: blur(3px);
+}
+
+.container:hover {
+    cursor: pointer;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 1);
+    transition: all 0.2s linear;
+}
+
+.container-view {
+    width: 400px;
+    height: 300px;
+    box-shadow: 0px 0px 70px rgba(0, 0, 0, 0.5);
+    margin: -150px -200px;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+}
+
+.container-view video,
+.container-myself video{
+    -webkit-filter: none;
+}
+
+.container-view:hover {
+    cursor: inherit;
+    box-shadow: 0px 0px 70px rgba(0, 0, 0, 0.5);
+}
 #content {
     margin-top : 70px;
     margin-left : 100px;
@@ -58,12 +106,12 @@ h2 {
 }
 
 .nogum {
-            display : none;
+    display : none;
 }
 
 .btn {
-            font-family: 'Lato';
-            font-size: 16px;
+    font-family: 'Lato';
+    font-size: 16px;
 }
 
 .hide {
@@ -74,16 +122,99 @@ h2 {
     display : block;
 }
 
-
 .fixed-left{
     position: fixed;
-    /*//height: 100%;*/
-    width: 200px;
+    width: 280px;
     top: 0px;
     bottom: 0px;
+    left: 0px;
+    box-shadow: 5px 0px 30px rgba(0, 0, 0, 0.3);
+    z-index: 2;
 }
-#localMediaContainer{
-    width: 200px;
-    height: 150px;
+.fixed-left #selectmask{
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    z-index: 2;
+}
+.fixed-left #localMediaContainer{
+    position: fixed;
+    width: 280px;
+    height: 210px;
+}
+.fixed-left .panel,
+.fixed-left .panel div{
+    border-radius: 0px;
+}
+.fixed-left .panel{
+    position: fixed;
+    height: auto;
+    overflow: hidden;
+    top: 210px;
+    bottom: 0px;
+    width: 280px;
+    margin: 0px;
+}
+.fixed-left .panel .panel-heading{
+    padding: 2px;
+}
+.fixed-left .panel .panel-heading input{
+    border-radius: 0px;
+    width: 260px;
+    margin: 0px 10px;
+    color: white;
+}
+.fixed-left .panel .panel-body{
+    position: absolute;
+    height: auto;
+    top: 38px;
+    width: 100%;
+    bottom: 28px;
+    overflow: auto;
+}
+.fixed-left .panel .panel-footer{
+    position: absolute;
+    height: 38px;
+    width: 100%;
+    bottom: 0px;
+    padding: 0px;
+}
+.fixed-left .panel .panel-footer input{
+    border-radius: 0px;
+    width: 180px;
+    margin: 0px 10px;
+}
+.fixed-left .panel .panel-footer button{
+    border-radius: 0px;
+    width: 80px;
+    height: 38px;
+    padding: 0px;
+}
 
+
+
+.fixed-right{
+    position: fixed;
+    width: 280px;
+    top: 0px;
+    bottom: 0px;
+    right: 0px;
+    left: 280px;
+}
+.fixed-right-top{
+    position: fixed;
+    top: 0px;
+    left: 280px;
+    right: 0px;
+    bottom: 130px;
+    background: url("/static/image/bg.png") repeat;
+}
+.fixed-right-bottom{
+    position: fixed;
+    bottom: 0px;
+    left: 280px;
+    right: 0px;
+    height:130px;
+    padding: 20px;
+    overflow: auto;
 }

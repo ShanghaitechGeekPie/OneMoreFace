@@ -2,7 +2,7 @@
 * @Author: eastpiger
 * @Date:   2015-10-24 21:10:49
 * @Last Modified by:   eastpiger
-* @Last Modified time: 2015-10-25 02:06:53
+* @Last Modified time: 2015-10-25 05:43:40
 */
 
 'use strict';
@@ -11,9 +11,11 @@ function Clmtrackr(){
 }
 
 function Clmtrackr_config(options){
+	this.scale = options.scale ? options.scale : false;
 	this.source = options.source ? options.source : undefined;
 	this.id = options.id ? options.id : undefined;
 	this.handle = options.handle ? options.handle : undefined;
+	this.currentMask = options.currentMask ? options.currentMask : 0;
 }
 
 function Clmtrackr_init(options){
@@ -21,16 +23,16 @@ function Clmtrackr_init(options){
 	this.overlay = document.createElement("canvas");
 	this.webgl = document.createElement("canvas");
 
-	this.video.setAttribute('class','video')
-	this.video.setAttribute('width','400')
-	this.video.setAttribute('height','300')
+	this.video.setAttribute('class','video');
+	this.video.setAttribute('width',this.scale ? (this.scale == 1) ? '400' : "280" : '120');
+	this.video.setAttribute('height',this.scale ? (this.scale == 1) ? '300' : "210" : '90');
 	this.video.setAttribute('preload','auto');
-	this.overlay.setAttribute('class','overlay')
-	this.overlay.setAttribute('width','400')
-	this.overlay.setAttribute('height','300');
-	this.webgl.setAttribute('class','webgl')
-	this.webgl.setAttribute('width','400')
-	this.webgl.setAttribute('height','300');
+	this.overlay.setAttribute('class','overlay');
+	this.overlay.setAttribute('width',this.scale ? (this.scale == 1) ? '400' : "280" : '120');
+	this.overlay.setAttribute('height',this.scale ? (this.scale == 1) ? '300' : "210" : '90');
+	this.webgl.setAttribute('class','webgl');
+	this.webgl.setAttribute('width',this.scale ? (this.scale == 1) ? '400' : "280" : '120');
+	this.webgl.setAttribute('height',this.scale ? (this.scale == 1) ? '300' : "210" : '90');
 
 	this.handle.appendChild(this.video);
 	this.handle.appendChild(this.overlay);
@@ -39,6 +41,14 @@ function Clmtrackr_init(options){
 	this.overlayCC = this.overlay.getContext('2d');
 	this.ctrack = new clm.tracker();
 
+	if (!this.scale) {
+		var temp = document.createElement("div");
+		temp.setAttribute('class','mask-question');
+		temp.innerHTML ='?';
+		this.handle.appendChild(temp);
+		this.handle.setAttribute('onclick','changeView("' + this.id + '")');
+	}
+
 	var source = this.source;
 	var handle = this.handle;
 	var video = this.video;
@@ -46,6 +56,7 @@ function Clmtrackr_init(options){
 	var webgl = this.webgl;
 	var overlayCC = this.overlayCC;
 	var ctrack = this.ctrack;
+	var currentMask = this.currentMask;
 
 	ctrack.init(pModel);
 
@@ -84,7 +95,7 @@ function Clmtrackr_init(options){
 		} else {
 			video.src = (window.URL && window.URL.createObjectURL(source)) || source;
 		}
-		video.play();
+	// video.play();
 	//     navigator.getUserMedia(videoSelector, function( stream ) {
 	//             video.mozSrcObject = source;
 				// if (video.mozCaptureStream) {
@@ -110,7 +121,6 @@ function Clmtrackr_init(options){
 	var fd = new faceDeformer();
 	fd.init(webgl);
 
-	var currentMask = 0;
 	var animationRequest;
 
 	function drawGridLoop() {
@@ -123,21 +133,25 @@ function Clmtrackr_init(options){
 		}
 		// check whether mask has converged
 		var pn = ctrack.getConvergence();
-		if (pn < 0.4) {
-			switchMasks();
-			requestAnimFrame(drawMaskLoop);
-		} else {
-			requestAnimFrame(drawGridLoop);
-		}
+		switchMasks();
+		requestAnimFrame(drawMaskLoop);
+		// if (pn < 0.4) {
+		// 	switchMasks();
+		// 	requestAnimFrame(drawMaskLoop);
+		// } else {
+		// 	requestAnimFrame(drawGridLoop);
+		// }
 	}
 
-	this.drawGridLoop = drawGridLoop
-
+	var _this = this
 	function switchMasks() {
 		// get mask
-		var maskname = Object.keys(masks)[currentMask];
+		var maskname = Object.keys(masks)[_this.currentMask];
 		fd.load(document.getElementById(maskname), masks[maskname], pModel);
 	}
+
+	this.drawGridLoop = drawGridLoop;
+	this.switchMasks = switchMasks;
 
 	function drawMaskLoop() {
 		// get position of face
@@ -154,7 +168,6 @@ function Clmtrackr_init(options){
 		stats.update();
 	}, false);
 
-
 }
 
 function Clmtrackr_destroy(){
@@ -162,27 +175,26 @@ function Clmtrackr_destroy(){
 	this.handle.parentNode.removeChild(this.handle);
 }
 
-
-function Clmtrackr_change(){
-	currentMask = parseInt(el.target.value, 10);
-	switchMasks();
+function Clmtrackr_changemask(value){
+	this.currentMask = parseInt(value, 10);
+	this.switchMasks();
 }
 
-function Clmtrackr_show() {
+function Clmtrackr_show(showctrack){
 	// start video
 	this.video.play();
-	// start tracking
-	this.ctrack.start(this.video);
-	// start drawing face grid
-	this.drawGridLoop();
+	if (showctrack){
+		// start tracking
+		this.ctrack.start(this.video);
+		// start drawing face grid
+		this.drawGridLoop();
+	}
 }
-
-
 
 Clmtrackr.prototype.config = Clmtrackr_config;
 Clmtrackr.prototype.init = Clmtrackr_init;
 Clmtrackr.prototype.destroy = Clmtrackr_destroy;
-Clmtrackr.prototype.change = Clmtrackr_change;
+Clmtrackr.prototype.changemask = Clmtrackr_changemask;
 Clmtrackr.prototype.show = Clmtrackr_show;
 
 var session,localStream
@@ -193,7 +205,7 @@ $(document).ready(function(){
 	// var session;
 	// 创建本地视频流
 	var config = {audio: true, video: true, data: true};
-	 localStream = new RTCat.Stream(config);
+	localStream = new RTCat.Stream(config);
 	// 获取远程视频流播放器位置
 	var remoteVideo = $('#remoteMediaContainer');
 
@@ -206,7 +218,24 @@ $(document).ready(function(){
 		// 正确建立连接，进入房间
 		session.on('session-connected', function (streams) {
 			// 显示自己的视频
-			localStream.play("localMediaContainer");
+			// localStream.play("localMediaContainer");
+			var clmtrackr = new Clmtrackr();
+
+			clmtrackrarray[0] = clmtrackr;
+
+			var temp = document.createElement("div");
+			temp.setAttribute('class','container container-myself');
+
+			document.getElementById('localMediaContainer').appendChild(temp);
+
+			clmtrackr.config({
+				source: localStream.stream,
+				handle: temp,
+				id: 0,
+				scale: 2
+			})
+			clmtrackr.init();
+			clmtrackr.show(true);
 			// 发布视频流
 			session.publish(localStream);
 			for (var stream in streams) {
@@ -244,10 +273,19 @@ $(document).ready(function(){
 			})
 			clmtrackr.init();
 			clmtrackr.show();
+			// clmtrackr.video.play();
 		});
 
 		session.on('session-message-received',function(stream_id,message){
-		   alert(message);
+			// alert(message);
+			if (message.type == "msg")
+				$("#msgbox").append('<p>'+message.msg+'<p>')
+			else if (message.type == "mask"){
+				clmtrackrarray[stream_id].changemask(message.mask);
+				if (clmtrackrarray['view'] && (clmtrackrarray['view'].id == stream_id)){
+					clmtrackrarray['view'].changemask(message.mask);
+				}
+			}
 		});
 
 		// 连接房间
@@ -258,14 +296,45 @@ $(document).ready(function(){
 	localStream.init()
  })
 
-function test(){
-	// var users = session.remoteStreams;
-	// for (var user in users) {
-	//     session.sendMessageTo(user, {text:'Hello', timestamp:12321312});
-	// }
-	// alert(localStream.local)
-	session.localStream.sendMessage({text:'Hello', timestamp:12321312});
-for (var peer in session.remoteStreams) {
-	session.sendMessageTo({text:'Hello', timestamp:12321312}, session.remoteStreams[peer].id);
+function changeView(id){
+	if (clmtrackrarray['view']){
+		clmtrackrarray['view'].destroy();
+
+	}
+	var clmtrackr = new Clmtrackr();
+
+	clmtrackrarray['view'] = clmtrackr;
+
+	var temp = document.createElement("div");
+	temp.setAttribute('class','container container-view');
+
+	document.getElementById('container-view').appendChild(temp);
+	clmtrackr.config({
+		source: clmtrackrarray[id].source,
+		handle: temp,
+		id: clmtrackrarray[id].id,
+		scale: 1,
+		currentMask: clmtrackrarray[id].currentMask
+	})
+	clmtrackr.init();
+	clmtrackr.show(true);
+	// clmtrackr.video.play();
 }
+
+function sendmsg(message){
+	// session.localStream.sendMessage(message);
+	$("#msgbox").append('<p>' + "[Myself]：" + message + '<p>')
+	for (var peer in session.remoteStreams) {
+		session.sendMessageTo({"type": "msg","msg": "[" + document.getElementById("name").value + "]：" + message}, session.remoteStreams[peer].id);
+	}
 }
+
+function changemask(){
+	for (var peer in session.remoteStreams) {
+		session.sendMessageTo({"type": "mask","mask": document.getElementById("selectmask").value}, session.remoteStreams[peer].id);
+	}
+	clmtrackrarray[0].changemask(document.getElementById("selectmask").value)
+	// alert(document.getElementById("selectmask").value)
+}
+
+
