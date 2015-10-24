@@ -2,7 +2,7 @@
 * @Author: eastpiger
 * @Date:   2015-10-24 21:10:49
 * @Last Modified by:   eastpiger
-* @Last Modified time: 2015-10-25 05:43:40
+* @Last Modified time: 2015-10-25 07:01:20
 */
 
 'use strict';
@@ -338,3 +338,12 @@ function changemask(){
 }
 
 
+$(function(){
+	$(".logo").addClass("active")
+	setTimeout(function(){
+		$(".logo").removeClass("active")
+	},2000);
+	setTimeout(function(){
+		$("body").removeClass("init")
+	},2500);
+})

@@ -3,11 +3,27 @@
 
 body {
     font-family: 'Lato';
-    background-color: #f0f0f0;
     margin: 0px;
     width: 0px;
+    background: url("/static/image/bg.png") repeat;
 }
 
+.logo{
+    background: url("/static/image/logo.png") center center no-repeat;
+    position: fixed;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    opacity:0;
+    transition: all 1s linear;
+}
+
+.logo.active{
+    background: url("/static/image/logo.png") center center no-repeat;
+    opacity:1.0;
+    transition: all 0.5s linear;
+}
 
 .overlay, .webgl {
     position: absolute;
@@ -123,6 +139,7 @@ h2 {
 }
 
 .fixed-left{
+    margin: 0px;
     position: fixed;
     width: 280px;
     top: 0px;
@@ -130,6 +147,7 @@ h2 {
     left: 0px;
     box-shadow: 5px 0px 30px rgba(0, 0, 0, 0.3);
     z-index: 2;
+    transition: all 0.2s linear;
 }
 .fixed-left #selectmask{
     position: absolute;
@@ -191,8 +209,6 @@ h2 {
     padding: 0px;
 }
 
-
-
 .fixed-right{
     position: fixed;
     width: 280px;
@@ -207,14 +223,26 @@ h2 {
     left: 280px;
     right: 0px;
     bottom: 130px;
-    background: url("/static/image/bg.png") repeat;
 }
 .fixed-right-bottom{
     position: fixed;
+    margin: 0px;
     bottom: 0px;
-    left: 280px;
+    left: 0px;
     right: 0px;
     height:130px;
     padding: 20px;
+    padding-left: 300px;
     overflow: auto;
+    transition: all 0.2s linear;
+    background-color: #f0f0f0;
+    box-shadow: 0px -20px 30px rgba(0, 0, 0, 0.1);
+}
+
+.init .fixed-left{
+    margin-left: -280px;
+}
+
+.init .fixed-right-bottom{
+    margin-bottom: -130px;
 }
