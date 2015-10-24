@@ -1,0 +1,84 @@
+{% load staticfiles %}
+<!-- camera.html -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+
+    <meta charset="utf-8">
+    <title>实时猫访问摄像头 Demo</title>
+
+    <!-- 非必须，本例中使用 jQuery -->
+    <script src="{% static "js/jquery.min.js" %}"></script>
+
+    <!-- 实时猫 RealTimeCat JavaScript SDK -->
+    <script src="{% static "js/realtimecat-0.1.min.js" %}"></script>
+</head>
+
+<body>
+
+    <!-- 定义一个视频容器，命名为"localMediaContainer" -->
+    <div id="localMediaContainer"></div>
+    <div id="remoteMediaContainer"></div>
+
+    <script>
+        $(document).ready(function(){
+
+            // 声明session变量
+            var session;
+            // 创建本地视频流
+            var config = {audio: true, video: true};
+            var localStream = new RTCat.Stream(config);
+            // 获取远程视频流播放器位置
+            var remoteVideo = $('#remoteMediaContainer');
+
+            // 使用token新建会话，请将此处的Token替换为
+            // 从http://dashboard.shishimao.com/生成的Token
+            session = new RTCat.Session("291057e3-6d64-4c3b-800f-cb32e9eea9b8");
+
+            // token验证正确
+            localStream.on("access-accepted", function () {
+                // 正确建立连接，进入房间
+                session.on('session-connected', function (streams) {
+                    // 显示自己的视频
+                    localStream.play("localMediaContainer");
+                    // 发布视频流
+                    session.publish(localStream);
+                    for (var stream in streams) {
+                        // 订阅视频流
+                        session.subscribe(streams[stream]);
+                    }
+                });
+
+                // 当别的用户加入时，订阅他的视频流
+                session.on('stream-added', function (stream) {
+                    session.subscribe(stream)
+                });
+
+                // 当别的用户退出时，移除他的视频流
+                session.on('stream-removed', function (stream) {
+                    // 移除视频
+                    $('#video-' + stream).remove();
+                });
+
+                // 成功订阅他人的视频流，在页面中创建一个播放容器并播放
+                session.on('stream-subscribed', function (stream) {
+                    var div = document.createElement('div');
+                    div.setAttribute("style", "width: 320px; height: 240px; float:left;");
+                    div.setAttribute("id", "video-" + stream.id);
+                    remoteVideo.append(div);
+                    stream.play("video-" + stream.id);
+                });
+
+                // 连接房间
+                session.connect();
+
+            });
+
+            localStream.init()
+         })
+    </script>
+
+</body>
+
+</html>

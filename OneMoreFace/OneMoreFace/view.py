@@ -8,5 +8,8 @@ import os
 def update(request):
     os.system('/var/www/OneMoreFace/deploy.sh > /var/www/a')
 
-def view_post(request, id):
-    pass
+def live(request):
+    return(render_to_response("live.html"))
+
+def live2(request):
+    return(render_to_response("live2.html"))
