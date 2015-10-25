@@ -15,11 +15,9 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from OneMoreFace.view import live, live2, live3
+from OneMoreFace.view import live
 
 urlpatterns = [
-    url(r'^live/$', live),
-    url(r'^live2/$', live2),
-    url(r'^live3/$', live3),
+    url(r'', live),
     # url(r'^admin/', include(admin.site.urls)),
 ]

@@ -13,19 +13,7 @@ def get_token():
 	response = requests.post('https://api.realtimecat.com/v0.1/tokens', data={'session_id': 'b7d92101-77b6-4dd8-81b8-ca734afc4d77', 'type': 'pub'}, headers=headers)
 	return(response.json()['token'])
 
-
-@csrf_exempt
-def update(request):
-	os.system('/var/www/OneMoreFace/deploy.sh > /var/www/a')
-
 def live(request):
 	return(render_to_response("live.html", {
 		'token': get_token(),
 		}))
-
-def live2(request):
-	return(render_to_response("live2.html"))
-
-def live3(request):
-	return(render_to_response("live3.html"))
-
