@@ -2,7 +2,7 @@
 * @Author: eastpiger
 * @Date:   2015-10-24 21:10:49
 * @Last Modified by:   eastpiger
-* @Last Modified time: 2015-10-25 07:01:20
+* @Last Modified time: 2015-10-25 11:18:51
 */
 
 'use strict';
@@ -327,6 +327,7 @@ function sendmsg(message){
 	for (var peer in session.remoteStreams) {
 		session.sendMessageTo({"type": "msg","msg": "[" + document.getElementById("name").value + "]：" + message}, session.remoteStreams[peer].id);
 	}
+	$('#reply').val("");
 }
 
 function changemask(){

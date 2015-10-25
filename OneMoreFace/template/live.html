@@ -30,6 +30,15 @@
                     <option value="4">Sean Connery</option>
                     <option value="5">Audrey</option>
                     <option value="6">Cage</option>
+                    <option value="7">ipang3</option>
+                    <option value="8">huitailang</option>
+                    <option value="9">wuyanzu</option>
+                    <option value="10">jinguanzhan</option>
+                    <option value="11">gaoyang</option>
+                    <option value="12">wangnima</option>
+                    <option value="13">tangmaru</option>
+                    <option value="14">mogen</option>
+                    <option value="15">sunwukong </option>
                 </select>
             </div>
             <div class="panel panel-primary">
@@ -41,12 +50,14 @@
                 <div class="panel-body" id="msgbox">
                 </div>
                 <div class="panel-footer">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Type something..." id="reply">
-                        <span class="input-group-btn">
-                            <button class="btn btn-primary" type="button" onclick="sendmsg($('#reply').val())">Send</button>
-                        </span>
-                    </div>
+                    <form onsubmit="return false;">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Type something..." id="reply">
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary" type="submit" onclick="sendmsg($('#reply').val())">Send</button>
+                            </span>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -68,6 +79,15 @@
                 <img id="skull" class="masks" src="{% static "./media/skullmask.jpg" %}"></img>
                 <img id="audrey" class="masks" src="{% static "./media/audrey.jpg" %}"></img>
                 <img id="cage2" class="masks" src="{% static "./media/cage.jpg" %}"></img>
+                <img id="ipang3" class="masks" src="{% static "./media/ipang3.jpg" %}"></img>
+                <img id="huitailang" class="masks" src="{% static "media/huitailang.jpg" %}"></img>
+                <img id="wuyanzu" class="masks" src="{% static "media/wuyanzu.jpg" %}"></img>
+                <img id="jinguanzhang" class="masks" src="{% static "media/jinguanzhang.jpg" %}"></img>
+                <img id="gaoyang" class="masks" src="{% static "media/gaoyang.jpg" %}"></img>
+                <img id="wangnima" class="masks" src="{% static "media/wangnima.jpg" %}"></img>
+                <img id="tangmaru" class="masks" src="{% static "media/tangmaru.jpg" %}"></img>
+                <img id="mogen" class="masks" src="{% static "media/mogen.jpg" %}"></img>
+                <img id="sunwukong" class="masks" src="{% static "media/sunwukong.jpg"  %}"></img>
             </div>
         </div>
     <script type="text/javascript">
